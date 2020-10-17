@@ -36,8 +36,9 @@ df1 <- state_wise_daily %>%
     names_to = "State_Code",
     values_to = "cases"
   ) %>%
+  mutate(cases=as.numeric(cases)) %>% 
   arrange(Date, State_Code, Status) %>%
-  mutate(cases = if_else(cases < 0, abs(cases), cases))
+  mutate(cases = if_else(cases < 0, 0, cases))
 
 # summary(df1)
 
@@ -67,8 +68,9 @@ state_choices <- sort(unique(df1_daily$State))
 
 summary <- sqldf('select Date,case when Status="Cumulative_Confirmed"
    then "Confirmed" when Status="Cumulative_Recovered" then  "Recovered"
-when Status="Cumulative_Deceased" then "Deceased" end as Status,cases from df1_daily where State_Code = "TT" and Status in
-                   ("Cumulative_Confirmed","Cumulative_Recovered","Cumulative_Deceased")   ')
+when Status="Cumulative_Deceased" then "Deceased" end as Status,sum(cases) cases  from df1_daily where State_Code not in ("DD","TT") and Status in
+                   ("Cumulative_Confirmed","Cumulative_Recovered","Cumulative_Deceased") 
+                    group by Date,Status')
 # for Comparison Button
 
 comparison <- df1_daily %>%
