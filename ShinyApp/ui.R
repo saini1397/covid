@@ -1,3 +1,14 @@
+
+#### -----------------------------Header---------------------####
+# Program Name : ui.r
+# Program Purpose : To make shiny User Interface 
+# Created By : Deepak Saini
+# Created Date : Oct-2020
+#
+#
+
+#-----------------------------------------------------------------
+
 library(shiny)
 library(tidyverse)
 library(sqldf)
@@ -15,7 +26,7 @@ library(leafpop)
 ui <- dashboardPage(
   skin = "black",
   title = "covid19",
-  
+
   dashboardHeader(
     title = span("Covid19"),
     titleWidth = 300,
@@ -30,7 +41,7 @@ ui <- dashboardPage(
       class = "dropdown"
     )
   ),
-  
+
   dashboardSidebar(
     width = 300,
     div(class = "inlay", style = "height:15px;width:100%;background-color:#ecf0f5"),
@@ -50,6 +61,12 @@ ui <- dashboardPage(
         tabName = "Predictive Modelling",
         icon = icon("paint-roller"), br(),
         div(
+          div(
+            selectInput(
+              inputId = "state", label = "Slect District",
+              choices = state_choices
+            )
+          ),
           bsButton(
             "p1",
             label = "Predict Confirmed",
@@ -66,8 +83,9 @@ ui <- dashboardPage(
           )
         )
       )
-    ) ),
-  
+    )
+  ),
+
   dashboardBody(
     tags$head(
       tags$link(
@@ -76,7 +94,7 @@ ui <- dashboardPage(
         href = "covid.css"
       )
     ),
-    
+
     fluidRow(
       column(
         width = 12,
@@ -86,80 +104,150 @@ ui <- dashboardPage(
           icon = icon("chart-line"),
           style = "success"
         ),
-        
+
         bsButton(
           "comparison",
           label = "Comparison",
           icon = icon("braille"),
           style = "success"
-        ),
-        
-        bsButton(
-          "map",
-          label = "Map",
-          icon = icon("map"),
-          style = "success"
         )
       )
-    ) , br(),
-    
-    
-    div(id="home1" , fluidRow(
+    ), br(),
+
+
+    div(id = "home1", fluidRow(
       div(
-        column (
+        column(
           width = 12,
           tabBox(
             width = NULL,
             height = 400,
             tabPanel(
               useShinyjs(),
-              title="Dashboard (India)", 
-              
-                div(column(width=12,div(valueBoxOutput("vbox1")),
-                           div(valueBoxOutput("vbox2"))
-                           )) ,
-               div(column(width=12,div(valueBoxOutput("vbox3")),
-                         div(valueBoxOutput("vbox4"))
+              title = "Dashboard (India)",
+
+              div(column(
+                width = 12, div(valueBoxOutput("vbox1")),
+                div(valueBoxOutput("vbox2"))
+              )),
+              div(column(
+                width = 12, div(valueBoxOutput("vbox3")),
+                div(valueBoxOutput("vbox4"))
               ))
-              
-              
             ),
-            
+
             tabPanel(
               useShinyjs(),
-              title="DataTable", 
+              title = "DataTable",
               withSpinner(
                 dataTableOutput("data_table"),
-                type=4,
+                type = 4,
                 color = "#d33724",
-                size=0.7
+                size = 0.7
               )
-              
-              
-            ) ,
+            ),
             tabPanel(
               useShinyjs(),
-              title="Map", 
+              title = "Map",
               withSpinner(
-                leafletOutput("plotmap_output",height=600),
-                type=4,
+                leafletOutput("plotmap_output", height = 600),
+                type = 4,
                 color = "#d33724",
-                size=0.7
+                size = 0.7
               )
-              
-              
             )
-            
           )
-        ) 
+        )
       )
-    )
-    )
+    )),
+
+    hidden(div(id = "p1div", fluidRow(
+      div(
+        column(
+          width = 12,
+          tabBox(
+            width = NULL,
+            height = 400,
+            tabPanel(
+              useShinyjs(),
+              title = "Forecasting Confirmed Cases (14 Days)",
+              withSpinner(
+                plotlyOutput("plotp1_output", height = "100%", width = "100%"),
+                type = 4,
+                color = "#d33724",
+                size = 0.7
+              )
+            )
+          )
+        )
+      )
+    ))),
+
+    hidden(div(id = "p2div", fluidRow(
+      div(
+        column(
+          width = 12,
+          tabBox(
+            width = NULL,
+            height = 400,
+            tabPanel(
+              useShinyjs(),
+              title = "Forecasting Death Cases (14 Days)",
+              withSpinner(
+                plotlyOutput("plotp2_output", height = "100%", width = "100%"),
+                type = 4,
+                color = "#d33724",
+                size = 0.7
+              )
+            )
+          )
+        )
+      )
+    ))) , 
     
+    hidden(div(id = "summarydiv", fluidRow(
+      div(
+        column(
+          width = 12,
+          tabBox(
+            width = NULL,
+            height = 400,
+            tabPanel(
+              useShinyjs(),
+              title = "Daily Cumulative Cases",
+              withSpinner(
+                plotlyOutput("plotsummary_output", height = "100%", width = "100%"),
+                type = 4,
+                color = "#d33724",
+                size = 0.7
+              )
+            )
+          )
+        )
+      )
+    ))) ,
     
-    
-    
+    hidden(div(id = "comparisondiv", fluidRow(
+      div(
+        column(
+          width = 12,
+          tabBox(
+            width = NULL,
+            height = 400,
+            tabPanel(
+              useShinyjs(),
+              title = "Compare Top Ten States by Cases",
+              withSpinner(
+                plotlyOutput("plotcomparison_output", height = "100%", width = "100%"),
+                type = 4,
+                color = "#d33724",
+                size = 0.7
+              )
+            )
+          )
+        )
+      )
+    )))
     
   )
 )
-
