@@ -63,7 +63,7 @@ ui <- dashboardPage(
         div(
           div(
             selectInput(
-              inputId = "state", label = "Slect District",
+              inputId = "state", label = "Select State",
               choices = state_choices
             )
           ),
