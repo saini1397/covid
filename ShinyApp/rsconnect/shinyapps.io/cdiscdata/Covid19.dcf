@@ -5,8 +5,8 @@ account: cdiscdata
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3032299
-bundleId: 3752382
+bundleId: 3760892
 url: https://cdiscdata.shinyapps.io/Covid19/
-when: 1602944818.4018
+when: 1603166952.19919
 asMultiple: FALSE
 asStatic: FALSE
