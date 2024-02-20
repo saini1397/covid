@@ -15,7 +15,7 @@ https://cdiscdata.shinyapps.io/Covid19/
 
 ```
 
-The COVID Application package could be accessed locally by cloning the [GitHub repository](https://github.com/saini1397/TLF
+The COVID Application package could be accessed locally by cloning the [GitHub repository](https://github.com/saini1397/covid
 
 ## Steps to Run the Application locally after downloading zip codes from Github Repository
 
